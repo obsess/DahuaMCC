@@ -8,7 +8,22 @@
 
 <body>
 <h1>Dahua Multi Camera Config</h1>
-<p>Planned features - add form controls and integrate with http api calls</p>
+<form action="" method="post" name="form1" class="greybg">
+  <p>Ip Range</p>
+  <p>
+    <label>Start</label>
+    <input name="ipstart" type="text" id="ipstart" value="192.168.1.40">
+    <label>End</label>
+    <input name="ipend" type="text" id="ipend" value="192.168.1.59">
+  </p>
+  <p><label>Command</label>&nbsp; 
+    <input name="dahuaAPIcommand" type="text" id="dahuaAPIcommand" value="configManager.cgi?action=getConfig&amp;name=VideoColor" size="80">
+  </p>
+  <p>
+    <input type="submit" name="Submit" id="Submit" value="Run Commands">
+  </p>
+</form>
+<p>&nbsp;</p>
 <p>This demonstrates connecting via api to multiple cameras to get current settings:</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -37,21 +52,24 @@ var sites = [
     'http://admin:admin@192.168.1.58/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
     'http://admin:admin@192.168.1.59/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
 ];
-for (var i in sites) {
-$.ajax({
-    url: 'proxy.php',
-    type: 'POST',
-    data: {
-        address: 
-		sites[i]
-    },
-    //output http commands & responses
-    success: function(response) {
-		$('body').append(sites[i]);
-        $('body').append('<p>' + response + '</p>');
-	         //.addClass('reverse');
-    }
-});
+var arrayLength = sites.length;
+for (var i=0; i < arrayLength; i++) {
+		$('body').append('<p id="output' + i + '">');
+		$.ajax({
+			url: 'proxy.php',
+			type: 'POST',
+			async: false,
+			data: {
+				address: 
+				sites[i]
+				},
+			//output http commands & responses
+			success: function(response) {
+				$('body').append(sites[i]);
+				$('body').append('</br>' + response);
+				}
+		});
+		$('body').append('</p>');
 };
 </script>
 
