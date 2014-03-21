@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <title>JQuery Dahua Tools</title>
 <link href="css/styles.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+
 </head>
 
 <body>
@@ -11,23 +13,29 @@
 <form action="" method="post" name="form1" class="greybg">
   <p>Ip Range</p>
   <p>
+    <label>Username</label>
+    <input name="unfield" type="text" id="unfield" value="admin">
+    <label>Password</label>
+    <input name="pwfield" type="text" id="pwfield" value="admin">
+  </p>
+  <p>
+    <label></label>
     <label>Start</label>
     <input name="ipstart" type="text" id="ipstart" value="192.168.1.40">
     <label>End</label>
     <input name="ipend" type="text" id="ipend" value="192.168.1.59">
   </p>
   <p><label>Command</label>&nbsp; 
-    <input name="dahuaAPIcommand" type="text" id="dahuaAPIcommand" value="configManager.cgi?action=getConfig&amp;name=VideoColor" size="80">
+    <input name="dahuaAPIcommand" type="text" id="dahuaAPIcommand" value="/cgi-bin/configManager.cgi?action=getConfig&amp;name=Encode" size="80">
   </p>
   <p>
-    <input type="submit" name="Submit" id="Submit" value="Run Commands">
+    <input type="button" name="Button" id="Submit" value="Run Commands" onClick="DisplayOutput();">
   </p>
 </form>
 <p>&nbsp;</p>
 <p>This demonstrates connecting via api to multiple cameras to get current settings:</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
 <script>
 //input html api commands for each cammera and output of the call will be dynamically displayed
 var sites = [
@@ -53,25 +61,21 @@ var sites = [
     'http://admin:admin@192.168.1.59/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
 ];
 var arrayLength = sites.length;
-for (var i=0; i < arrayLength; i++) {
-		$('body').append('<p id="output' + i + '">');
-		$.ajax({
-			url: 'proxy.php',
-			type: 'POST',
-			async: false,
-			data: {
-				address: 
-				sites[i]
-				},
-			//output http commands & responses
+
+function createDivs() {
+	for (var i=0; i < arrayLength; i++) {
+		$('body').append('<div id="container_'+i+'></div')
+	}
+}
+function DisplayOutput() {
+	for (var i=0; i < arrayLength; i++) {
+		$.ajax({url: 'proxy.php', type: 'POST', cache: false, data: { address: sites[i] },
 			success: function(response) {
-				$('body').append(sites[i]);
-				$('body').append('</br>' + response);
-				}
+				$('body').append(sites[i] + '<br>');
+				$('body').append(response+'<br>');}
 		});
-		$('body').append('</p>');
+	};
 };
 </script>
-
 </body>
 </html>
