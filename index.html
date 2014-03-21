@@ -14,6 +14,7 @@
 <p>&nbsp;</p>
 <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
 <script>
+//input html api commands for each cammera and output of the call will be dynamically displayed
 var sites = [
     'http://admin:admin@192.168.1.40/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
     'http://admin:admin@192.168.1.41/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
@@ -44,6 +45,7 @@ $.ajax({
         address: 
 		sites[i]
     },
+    //output http commands & responses
     success: function(response) {
 		$('body').append(sites[i]);
         $('body').append('<p>' + response + '</p>');
