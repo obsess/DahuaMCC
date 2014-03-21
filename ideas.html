@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+</head>
+
+<script language="javascript">
+var sites = [
+    'http://admin:admin@192.168.1.40/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
+    'http://admin:admin@192.168.1.41/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
+    'http://admin:admin@192.168.1.42/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
+];
+ 
+ 
+for (var i in sites) {
+    var inline_function = function(i) {
+        Ti.API.info('loading ' + sites[i] + '...');
+        var xhr = Ti.Network.createHTTPClient();
+        xhr.onload = function() {
+            // Do something here
+            Ti.API.warn(sites[i] + " loaded.");
+            var r = this.responseText
+            r = r.substr(0, 5);
+            Ti.API.info(r);
+        }
+        xhr.open("GET", sites[i]);
+        xhr.send();
+    };
+    inline_function(i)
+	document.getElementById("dresult").innerHTML=xmlhttp.responseText;
+}
+</script>
+<script>
+$.ajax({
+    url: 'proxy.php',
+    type: 'POST',
+    data: {
+        address: 'http://www.google.com'
+    },
+    success: function(response) {
+        $('body').append(response)
+	         .addClass('reverse');
+    }
+});
+</script>
+<body>
+TEST1234
+</body>
+</html>
