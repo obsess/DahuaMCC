@@ -7,56 +7,138 @@
 <link href="css/styles.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
 <script>
-//input html api commands for each cammera and output of the call will be dynamically displayed
+//declare settings
+var resolutionSet = '1920x1080';
+var bitrateSet = '1024';
+var fpsSet = '15';
+var gopSet = '45';				//this is i frame interval in frames 
+var bitrateControlSet = 'VBR';	//VBR or CBR
+var vbrQualitySet = '4';		//1-6
+//declare api calls
 var sites = [
-    'http://admin:admin@192.168.1.40/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.40/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.41/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.41/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.42/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.42/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.43/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.43/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.44/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.44/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.45/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.45/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.46/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.46/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.47/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.47/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.48/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.48/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.49/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.49/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.50/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.50/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.51/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.51/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.52/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.52/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.53/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.53/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.54/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.54/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.55/cgi-bin/netApp.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.55/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.56/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.56/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.57/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.57/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.58/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.58/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
-	'http://admin:admin@192.168.1.59/cgi-bin/encode.cgi?action=getConfigCaps',
-    'http://admin:admin@192.168.1.59/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.40/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.41/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.42/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.43/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.44/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.45/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.46/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.47/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.48/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.49/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + '1280x720' + /* this resolution is constant */
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.50/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.51/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.52/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.53/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.54/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.55/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.56/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.57/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.58/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet,
+	'http://admin:admin@192.168.1.59/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=' + bitrateControlSet + 
+		'&Encode[0].MainFormat[0].Video.Quality=' + vbrQualitySet + 
+		'&Encode[0].MainFormat[0].Video.BitRate=' + bitrateSet + 
+		'&Encode[0].MainFormat[0].Video.resolution=' + resolutionSet + 
+		'&Encode[0].MainFormat[0].Video.FPS=' + fpsSet + 
+		'&Encode[0].MainFormat[0].Video.GOP=' + gopSet
 ];
 var arrayLength = sites.length;
 
-function createDivs() {
-	for (var i=0; i < arrayLength; i++) {
-		$('body').append('<div id="container_'+i+'></div')
-	}
-}
 function displayOutput() {
 	for (var i=0; i < arrayLength; i++) {
 		$.ajax({url: 'proxy.php', type: 'POST', cache: false, data: { address: sites[i] },
@@ -66,15 +148,6 @@ function displayOutput() {
 	};
 };
 
-//function DisplayOutput() {
-//	for (var i=0; i < arrayLength; i++) {
-//		$.ajax({url: 'proxy.php', type: 'POST', cache: false, data: { address: sites[i] },
-//			success: function(response) {
-//				$('#container_'+i).text(sites[i] + '<br>');
-//				$('#container_'+i).append(response+'<br>');}
-//		});
-//	};
-//};
 </script>
 </head>
 
@@ -96,11 +169,10 @@ function displayOutput() {
     <input name="ipend" type="text" id="ipend" value="192.168.1.59">
   </p>
   <p><label>Command</label>&nbsp; 
-    <input name="dahuaAPIcommand" type="text" id="dahuaAPIcommand" value="/cgi-bin/configManager.cgi?action=getConfig&amp;name=Encode" size="80">
+    <textarea name="dahuaAPIcommand" cols="80" rows="5" id="dahuaAPIcommand">http://[username]:[password]@[ip]/cgi-bin/configManager.cgi?action=setConfig&Encode[0].MainFormat[0].Video.BitRateControl=VBR&Encode[0].MainFormat[0].Video.Quality=4&Encode[0].MainFormat[0].Video.BitRate=2048&Encode[0].MainFormat[0].Video.resolution=1920x1080&Encode[0].MainFormat[0].Video.FPS=15&Encode[0].MainFormat[0].Video.GOP=45</textarea>
   </p>
   <p>
     <input type="button" name="Button" id="Submit" value="Run Commands" onClick="displayOutput();">
-    <input type="button" name="Button2" id="Submit2" value="Create Divs" onClick="createDivs();">
   </p>
 </form>
 <p>&nbsp;</p>
