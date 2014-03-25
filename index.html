@@ -1,3 +1,4 @@
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -5,7 +6,76 @@
 <title>JQuery Dahua Tools</title>
 <link href="css/styles.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+<script>
+//input html api commands for each cammera and output of the call will be dynamically displayed
+var sites = [
+    'http://admin:admin@192.168.1.40/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.40/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.41/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.41/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.42/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.42/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.43/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.43/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.44/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.44/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.45/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.45/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.46/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.46/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.47/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.47/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.48/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.48/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.49/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.49/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.50/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.50/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.51/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.51/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.52/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.52/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.53/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.53/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.54/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.54/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.55/cgi-bin/netApp.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.55/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.56/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.56/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.57/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.57/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.58/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.58/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+	'http://admin:admin@192.168.1.59/cgi-bin/encode.cgi?action=getConfigCaps',
+    'http://admin:admin@192.168.1.59/cgi-bin/configManager.cgi?action=getConfig&name=Encode',
+];
+var arrayLength = sites.length;
 
+function createDivs() {
+	for (var i=0; i < arrayLength; i++) {
+		$('body').append('<div id="container_'+i+'></div')
+	}
+}
+function displayOutput() {
+	for (var i=0; i < arrayLength; i++) {
+		$.ajax({url: 'proxy.php', type: 'POST', cache: false, data: { address: sites[i] },
+			success: function(response) {
+				$('body').append('<pre class="smallOutput">'+response+'</pre></br>');}
+		});
+	};
+};
+
+//function DisplayOutput() {
+//	for (var i=0; i < arrayLength; i++) {
+//		$.ajax({url: 'proxy.php', type: 'POST', cache: false, data: { address: sites[i] },
+//			success: function(response) {
+//				$('#container_'+i).text(sites[i] + '<br>');
+//				$('#container_'+i).append(response+'<br>');}
+//		});
+//	};
+//};
+</script>
 </head>
 
 <body>
@@ -29,53 +99,14 @@
     <input name="dahuaAPIcommand" type="text" id="dahuaAPIcommand" value="/cgi-bin/configManager.cgi?action=getConfig&amp;name=Encode" size="80">
   </p>
   <p>
-    <input type="button" name="Button" id="Submit" value="Run Commands" onClick="DisplayOutput();">
+    <input type="button" name="Button" id="Submit" value="Run Commands" onClick="displayOutput();">
+    <input type="button" name="Button2" id="Submit2" value="Create Divs" onClick="createDivs();">
   </p>
 </form>
 <p>&nbsp;</p>
 <p>This demonstrates connecting via api to multiple cameras to get current settings:</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<script>
-//input html api commands for each cammera and output of the call will be dynamically displayed
-var sites = [
-    'http://admin:admin@192.168.1.40/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.41/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.42/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.43/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.44/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.45/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.46/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.47/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.48/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.49/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.50/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.51/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.52/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.53/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.54/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.55/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.56/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.57/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.58/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-    'http://admin:admin@192.168.1.59/cgi-bin/configManager.cgi?action=getConfig&name=VideoColor',
-];
-var arrayLength = sites.length;
 
-function createDivs() {
-	for (var i=0; i < arrayLength; i++) {
-		$('body').append('<div id="container_'+i+'></div')
-	}
-}
-function DisplayOutput() {
-	for (var i=0; i < arrayLength; i++) {
-		$.ajax({url: 'proxy.php', type: 'POST', cache: false, data: { address: sites[i] },
-			success: function(response) {
-				$('body').append(sites[i] + '<br>');
-				$('body').append(response+'<br>');}
-		});
-	};
-};
-</script>
 </body>
 </html>
